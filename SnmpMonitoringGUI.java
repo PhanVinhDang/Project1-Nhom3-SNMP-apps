@@ -71,6 +71,24 @@ public class SnmpMonitoringGUI extends JFrame {
                 startMonitoring();
             }
         });
+
+        // Register mouse listener for the output area
+        outputArea.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int pos = outputArea.viewToModel(evt.getPoint());
+                try {
+                    int lineStart = javax.swing.text.Utilities.getRowStart(outputArea, pos);
+                    int lineEnd = javax.swing.text.Utilities.getRowEnd(outputArea, pos);
+                    String selectedLine = outputArea.getText().substring(lineStart, lineEnd);
+                    if (selectedLine.contains("=")) {
+                        String oid = selectedLine.split("=")[0].trim();
+                        displayOIDInformation(oid);
+                    }
+                } catch (javax.swing.text.BadLocationException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
     }
 
     private void startMonitoring() {
@@ -122,6 +140,17 @@ public class SnmpMonitoringGUI extends JFrame {
             snmp.close();
         } catch (IOException e) {
             outputArea.append("Error: " + e.getMessage() + "\n");
+        }
+    }
+
+    private void displayOIDInformation(String oid) {
+        try {
+            OID parsedOID = new OID(oid);
+            // Perform any operation you want with the OID, such as querying its value or retrieving additional information
+            // For simplicity, let's just display the OID in a message dialog
+            JOptionPane.showMessageDialog(this, "Selected OID: " + parsedOID.toString());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid OID: " + oid, "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
