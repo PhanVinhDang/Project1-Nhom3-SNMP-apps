@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import org.snmp4j.CommunityTarget;
@@ -20,6 +21,10 @@ import org.snmp4j.util.DefaultPDUFactory;
 import org.snmp4j.util.TreeEvent;
 import org.snmp4j.util.TreeListener;
 import org.snmp4j.util.TreeUtils;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+
 
 public class SnmpMonitoringGUI extends JFrame {
 
@@ -28,6 +33,7 @@ public class SnmpMonitoringGUI extends JFrame {
     private JTextField oidField;
     private JButton startButton;
     private JTextArea outputArea;
+    private JsonNode rfc1213JsonRoot;
 
     public SnmpMonitoringGUI() {
         setTitle("SNMP Monitoring");
@@ -89,7 +95,23 @@ public class SnmpMonitoringGUI extends JFrame {
                 }
             }
         });
+
+        // Load the RFC1213 MIB JSON file
+        rfc1213JsonRoot = loadRFC1213JsonFile("E:\\proj_1\\rfc1213.json");
     }
+    private JsonNode loadRFC1213JsonFile(String filePath) {
+        ObjectMapper objMapper = new ObjectMapper();
+        JsonNode jsonNode = null;
+
+        try {
+            jsonNode = objMapper.readTree(new File(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return jsonNode;
+    }
+
 
     private void startMonitoring() {
         String ipAddress = ipAddressField.getText();
@@ -129,7 +151,13 @@ public class SnmpMonitoringGUI extends JFrame {
                         VariableBinding[] varBindings = event.getVariableBindings();
                         if (varBindings != null) {
                             for (VariableBinding varBinding : varBindings) {
-                                outputArea.append(varBinding.toString() + "\n");
+                                String oidStr = varBinding.getOid().toString();
+                                String oidName = getOIDName(oidStr);
+                                String oidDescription = getOIDDescription(oidStr);
+
+                                outputArea.append("OID: " + oidStr + "\n");
+                                outputArea.append("Name: " + oidName + "\n");
+                                outputArea.append("Description: " + oidDescription + "\n\n");
                             }
                         }
                     }
@@ -143,12 +171,38 @@ public class SnmpMonitoringGUI extends JFrame {
         }
     }
 
+    private String getOIDName(String oidStr) {
+        JsonNode oidNode = rfc1213JsonRoot.get(oidStr);
+        if (oidNode != null) {
+            JsonNode nameNode = oidNode.get("name");
+            if (nameNode != null) {
+                return nameNode.asText();
+            }
+        }
+        return "";
+    }
+
+    private String getOIDDescription(String oidStr) {
+        JsonNode oidNode = rfc1213JsonRoot.get(oidStr);
+        if (oidNode != null) {
+            JsonNode descriptionNode = oidNode.get("description");
+            if (descriptionNode != null) {
+                return descriptionNode.asText();
+            }
+        }
+        return "";
+    }
+
     private void displayOIDInformation(String oid) {
         try {
-            OID parsedOID = new OID(oid);
-            // Perform any operation you want with the OID, such as querying its value or retrieving additional information
-            // For simplicity, let's just display the OID in a message dialog
-            JOptionPane.showMessageDialog(this, "Selected OID: " + parsedOID.toString());
+            String oidName = getOIDName(oid);
+            String oidDescription = getOIDDescription(oid);
+            
+            String message = "Selected OID: " + oid + "\n";
+            message += "Name: " + oidName + "\n";
+            message += "Description: " + oidDescription + "\n";
+
+            JOptionPane.showMessageDialog(this, message, "OID Information", JOptionPane.INFORMATION_MESSAGE);
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Invalid OID: " + oid, "Error", JOptionPane.ERROR_MESSAGE);
         }
