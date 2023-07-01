@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="615.0" prefWidth="945.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ScreenController">
+   <children>
+      <Pane layoutY="-9.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ComboBox fx:id="cbOperation" disable="true" layoutX="247.0" layoutY="137.0" prefHeight="25.0" prefWidth="213.0" promptText="Select an operation: " />
+            <Button fx:id="btExecute" disable="true" layoutX="670.0" layoutY="137.0" mnemonicParsing="false" onAction="#execute" prefHeight="25.0" prefWidth="100.0" text="Execute" />
+            <TextArea fx:id="taResult" editable="false" layoutX="246.0" layoutY="206.0" prefHeight="391.0" prefWidth="654.0" />
+            <TreeView fx:id="tvMIB" layoutX="14.0" layoutY="50.0" prefHeight="546.0" prefWidth="200.0" />
+            <TextField fx:id="tfIp" layoutX="247.0" layoutY="72.0" prefHeight="25.0" prefWidth="200.0" promptText="Điền vào Host IP:" />
+            <TextField fx:id="tfPort" layoutX="463.0" layoutY="72.0" prefHeight="25.0" prefWidth="109.0" promptText="Điền vào port:" />
+            <TextField fx:id="tfCommunity" layoutX="588.0" layoutY="72.0" prefHeight="25.0" prefWidth="200.0" promptText="Điền vào Community:" />
+            <Text layoutX="247.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Điền vào mới chạy được nhé bro" />
+            <Text layoutX="246.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Kết quả" />
+            <Separator layoutX="247.0" layoutY="173.0" prefHeight="4.0" prefWidth="654.0" />
+            <Button fx:id="btClearResults" layoutX="785.0" layoutY="138.0" mnemonicParsing="false" onAction="#ClearResults" prefHeight="25.0" prefWidth="115.0" text="Xóa kết quả" />
+            <Button fx:id="btConfirm" layoutX="801.0" layoutY="72.0" mnemonicParsing="false" onAction="#confirm" prefWidth="100.0" text="Xác nhận" />
+            <Separator layoutX="247.0" layoutY="106.0" prefHeight="4.0" prefWidth="654.0" />
+            <Text layoutX="247.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Operations" />
+            <TextField fx:id="tfOID" disable="true" layoutX="473.0" layoutY="138.0" prefHeight="25.0" prefWidth="186.0" promptText="Điền vào OID hợp lệ:" />
+            <Pane fx:id="paSet" layoutX="246.0" layoutY="181.0" prefHeight="64.0" prefWidth="654.0" stylesheets="@application.css" visible="false">
+               <children>
+                  <TextArea editable="false" prefHeight="64.0" prefWidth="654.0" />
+                  <Label layoutX="5.0" layoutY="8.0" text="Điền vào giá trị mới" />
+                  <TextField fx:id="tfNewValue" layoutX="4.0" layoutY="25.0" prefHeight="25.0" prefWidth="312.0" promptText="Giá trị mới" />
+                  <Button fx:id="btCancelSet" layoutX="327.0" layoutY="25.0" mnemonicParsing="false" onAction="#cancelset" prefHeight="25.0" prefWidth="69.0" text="Cancel" />
+                  <Button fx:id="btSendSet" layoutX="409.0" layoutY="25.0" mnemonicParsing="false" onAction="#sendSet" prefHeight="25.0" prefWidth="69.0" text="Send" />
+               </children>
+            </Pane>
+            <TableView fx:id="tvTabel" editable="true" layoutX="247.0" layoutY="208.0" prefHeight="391.0" prefWidth="654.0" visible="false">
+              <columns>
+                <TableColumn prefWidth="75.0" text="C1" />
+                <TableColumn prefWidth="75.0" text="C2" />
+              </columns>
+            </TableView>
+         </children>
+      </Pane>
+      <MenuBar layoutX="275.0" layoutY="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+                  <MenuItem fx:id="miTest" mnemonicParsing="false" onAction="#test" text="Test mode" />
+                  <MenuItem fx:id="miClearParam" mnemonicParsing="false" onAction="#ClearParams" text="Clear paramaters" />
+              <MenuItem fx:id="miClose" mnemonicParsing="false" onAction="#thoat" text="Close" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>
