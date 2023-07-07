@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 public class OidDescription {
     public String oid;
 
-
     public OidDescription(String oid) {
         this.oid = oid;
     }
@@ -22,9 +21,7 @@ public class OidDescription {
 
             Process process = processBuilder.start();
 
-            BufferedReader reader =
-                    new BufferedReader(new InputStreamReader(process.getInputStream()));
-
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
             String line;
             while ((line = reader.readLine()) != null) {
@@ -32,9 +29,8 @@ public class OidDescription {
                 output += "\n";
             }
         } catch (IOException e) {
-            e.printStackTrace();
         }
         return output;
-     
+
     }
 }
