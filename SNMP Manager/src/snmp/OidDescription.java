@@ -5,8 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class OidDescription {
-    public String oid;
-
+    final String oid;
 
     public OidDescription(String oid) {
         this.oid = oid;
