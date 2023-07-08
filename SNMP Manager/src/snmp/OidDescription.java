@@ -28,7 +28,6 @@ public class OidDescription {
                 output += "\n";
             }
         } catch (IOException e) {
-            e.printStackTrace();
         }
         return output;
      
