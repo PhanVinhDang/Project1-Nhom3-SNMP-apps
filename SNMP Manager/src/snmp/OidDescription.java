@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 public class OidDescription {
     public String oid;
 
+
     public OidDescription(String oid) {
         this.oid = oid;
     }
@@ -14,14 +15,13 @@ public class OidDescription {
     public String translate() {
 
         String output = "";
-        ProcessBuilder processBuilder = new ProcessBuilder();
-        // Windows
-        processBuilder.command("cmd.exe", "/c", "snmptranslate -Td " + this.oid);
         try {
+            String command = "C:\\usr\\bin\\snmptranslate -Td " + this.oid; // Thay đường dẫn trên bằng đường dẫn đã cài net-snmp bin
+            Process process = Runtime.getRuntime().exec(command);
 
-            Process process = processBuilder.start();
+            BufferedReader reader =
+                    new BufferedReader(new InputStreamReader(process.getInputStream()));
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
             String line;
             while ((line = reader.readLine()) != null) {
@@ -29,8 +29,9 @@ public class OidDescription {
                 output += "\n";
             }
         } catch (IOException e) {
+            e.printStackTrace();
         }
         return output;
-
+     
     }
 }
