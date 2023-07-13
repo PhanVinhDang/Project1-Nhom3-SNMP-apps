@@ -11,4 +11,6 @@
 
 # 3. Cách sử dụng chường trình:
 - Mở cmd git clone về thư mục bất kì, mở 1 IDE có hỗ trợ Java và mở thư mục vừa tải về.
-- Chạy code ở package gui.main và sử dụng
+- Chạy code ở package gui.main
+- Vào File chọn Test Mode để tự động nhập các thông số cần thiết để kiểm tra máy của mình
+- Chọn OID qua Tree nếu không điền số OID và chọn các chức năng rồi chạy ứng dụng
